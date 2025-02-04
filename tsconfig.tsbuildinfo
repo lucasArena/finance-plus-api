@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/application/infra/http/httpserver.ts","./src/application/routes/authentication.ts","./src/application/routes/index.ts","./src/controllers/authentication/authentication.ts","./src/services/authentication/signup.service.ts"],"errors":true,"version":"5.7.2"}

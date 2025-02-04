@@ -1,0 +1,50 @@
+{
+  "name": "finance-plus",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "type": "module",
+  "author": "Lucas Arena",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsx watch src/index.ts",
+    "run:production": "node dist/index.js",
+    "lint": "yarn eslint .",
+    "build": "tsc && tsc-alias",
+    "database:migrate": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:latest",
+    "database:rollback:all": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:rollback --all"
+  },
+  "dependencies": {
+    "@types/typescript": "^2.0.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.18.0",
+    "fastify": "^5.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
+    "tsyringe": "^4.8.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@fastify/swagger": "^9.4.2",
+    "@fastify/swagger-ui": "^5.2.1",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.1",
+    "@types/pg": "^8.11.10",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "globals": "^15.14.0",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.20.0"
+  }
+}
