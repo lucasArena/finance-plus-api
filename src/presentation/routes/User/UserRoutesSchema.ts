@@ -31,7 +31,7 @@ export const usersSignUpSchema: FastifySchema = {
   tags: ['Users'],
   body: {
     type: 'object',
-    required: ['username', 'email', 'password'],
+    required: ['name', 'email', 'password'],
     properties: {
       name: {
         type: 'string',
