@@ -24,6 +24,9 @@ export class SignInUserUsecase {
       throw new Error('Email or password not found', { cause: 401 })
     }
 
-    return this.authentication.encrypt({ key: usersignIn.key })
+    return this.authentication.encrypt({
+      key: usersignIn.key,
+      name: usersignIn.name,
+    })
   }
 }
