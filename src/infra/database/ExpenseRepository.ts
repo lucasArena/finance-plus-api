@@ -22,6 +22,7 @@ export class ExpenseRepository implements IExpenseRepository {
       })
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
+      .orderBy('expenses.date', 'desc')
       .offset(offset)
       .limit(limit)
 
