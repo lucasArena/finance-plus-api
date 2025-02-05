@@ -33,12 +33,13 @@ export class ListUserExpensesUsecase {
       await this.expenseRepository.getTotalByUserKeyAndDate(expense)
 
     const totalPages = Math.ceil(userTotalExpenses / data.pageSize)
+    const safeTotalPages = totalPages === 0 ? 1 : totalPages
 
     return {
       page: data.page,
       pageSize: data.pageSize,
       total: userTotalExpenses,
-      totalPages,
+      totalPages: safeTotalPages,
       items: userExpenses,
     }
   }
