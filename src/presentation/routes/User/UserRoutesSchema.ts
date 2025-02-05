@@ -95,11 +95,12 @@ export const usersExpensesSchema: FastifySchema = {
         items: {
           type: 'array',
           properties: {
-            key: { type: 'string', description: 'JWT token' },
-            createdAt: { type: 'string', description: 'JWT token' },
-            updatedAt: { type: 'string', description: 'JWT token' },
-            type: { type: 'object', description: 'JWT token' },
-            name: { type: 'string', description: 'JWT token' },
+            key: { type: 'string', description: 'Expense key' },
+            createdAt: { type: 'string', description: 'Expense creation date' },
+            updatedAt: { type: 'string', description: 'Expense updated date' },
+            type: { type: 'object', name: 'Expense type' },
+            description: { type: 'string', description: 'Expense description' },
+            value: { type: 'string', description: 'Expense value' },
           },
           description: 'Domain items array',
         },
