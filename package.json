@@ -10,6 +10,7 @@
     "run:production": "node dist/index.js",
     "lint": "yarn eslint .",
     "build": "tsc && tsc-alias",
+    "database:make": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:make",
     "database:migrate": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:latest",
     "database:rollback:all": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:rollback --all"
   },

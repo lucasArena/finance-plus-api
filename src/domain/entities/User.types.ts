@@ -18,6 +18,7 @@ export class User extends Entity {
       updatedAt: props.updatedAt,
     })
 
+    this.name = props.name
     this.email = props.email
     this.password = props.password
   }
