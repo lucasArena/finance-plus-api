@@ -22,7 +22,7 @@ export class ExpenseRepository implements IExpenseRepository {
       })
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
-      .whereNull('deletedAt')
+      .whereNull('expenses.deletedAt')
       .orderBy('expenses.date', 'desc')
       .offset(offset)
       .limit(limit)
@@ -53,7 +53,7 @@ export class ExpenseRepository implements IExpenseRepository {
       })
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
-      .whereNull('deletedAt')
+      .whereNull('expenses.deletedAt')
       .count<[{ count: number }]>('key as count')
 
     return expensesCount.count
@@ -71,7 +71,7 @@ export class ExpenseRepository implements IExpenseRepository {
       .where({ userKey: expense.userKey })
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
-      .whereNull('deletedAt')
+      .whereNull('expenses.deletedAt')
       .groupBy('expenses.typeId', 'expenses_types.name')
 
     return response.map(expenseGrouped => ({
