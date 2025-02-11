@@ -22,6 +22,7 @@ export class ExpenseRepository implements IExpenseRepository {
       })
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
+      .whereNull('deletedAt')
       .orderBy('expenses.date', 'desc')
       .offset(offset)
       .limit(limit)
@@ -52,6 +53,7 @@ export class ExpenseRepository implements IExpenseRepository {
       })
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
+      .whereNull('deletedAt')
       .count<[{ count: number }]>('key as count')
 
     return expensesCount.count
@@ -69,6 +71,7 @@ export class ExpenseRepository implements IExpenseRepository {
       .where({ userKey: expense.userKey })
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
+      .whereNull('deletedAt')
       .groupBy('expenses.typeId', 'expenses_types.name')
 
     return response.map(expenseGrouped => ({
@@ -76,6 +79,24 @@ export class ExpenseRepository implements IExpenseRepository {
       name: expenseGrouped.name,
       total: Number(expenseGrouped.total),
     }))
+  }
+
+  async getByKey(key: string): Promise<Expense | null> {
+    const response = await Knex('expenses')
+      .where({ key })
+      .whereNull('deletedAt')
+      .first()
+
+    if (!response) return null
+
+    return new Expense({
+      key: response?.key,
+      type: new ExpenseType({ key: response?.typeId }),
+      description: response?.description,
+      value: response?.value,
+      date: response?.date,
+      userKey: response?.userKey,
+    })
   }
 
   async create(expense: Expense): Promise<void> {
@@ -86,5 +107,26 @@ export class ExpenseRepository implements IExpenseRepository {
       date: expense.date,
       userKey: expense.userKey,
     })
+  }
+
+  async edit(expense: Expense): Promise<void> {
+    await Knex('expenses')
+      .update({
+        typeId: expense.type?.key,
+        description: expense.description,
+        value: expense.value,
+        date: expense.date,
+      })
+      .whereNull('deletedAt')
+      .where({ key: expense.key })
+  }
+
+  async delete(key: string): Promise<void> {
+    await Knex('expenses')
+      .update({
+        deletedAt: new Date(),
+      })
+      .whereNull('deletedAt')
+      .where({ key })
   }
 }
