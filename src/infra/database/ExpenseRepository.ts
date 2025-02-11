@@ -16,7 +16,15 @@ export class ExpenseRepository implements IExpenseRepository {
     const [year, month] = expense.date?.split('-') ?? []
 
     const response = await Knex('expenses')
-      .innerJoin('expenses_types', 'expenses.typeId', 'expenses.key')
+      .select(
+        'expenses.key',
+        'expenses.typeId',
+        'expenses.description',
+        'expenses.date',
+        'expenses.value',
+        'expenses_types.name',
+      )
+      .innerJoin('expenses_types', 'expenses.typeId', 'expenses_types.key')
       .where({
         userKey: expense.userKey,
       })
