@@ -16,7 +16,7 @@ export class ExpenseRepository implements IExpenseRepository {
     const [year, month] = expense.date?.split('-') ?? []
 
     const response = await Knex('expenses')
-      .innerJoin('expenses_types', 'expenses.typeId', 'expenses_types.key')
+      .innerJoin('expenses_types', 'expenses.typeId', 'expenses.key')
       .where({
         userKey: expense.userKey,
       })
@@ -32,7 +32,7 @@ export class ExpenseRepository implements IExpenseRepository {
         new Expense({
           key: expense.key,
           type: new ExpenseType({
-            key: expense.key,
+            key: expense.typeId,
             name: expense.name,
           }),
           description: expense.description,
