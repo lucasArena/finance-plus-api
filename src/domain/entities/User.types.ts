@@ -4,12 +4,14 @@ export interface IUser extends IEntity {
   name: string
   email: string
   password: string
+  activatedAt: Date
 }
 
 export class User extends Entity {
   public readonly name?: string
   public readonly email?: string
   public readonly password?: string
+  public readonly activatedAt?: Date
 
   constructor(props: Partial<IUser>) {
     super({
@@ -21,5 +23,6 @@ export class User extends Entity {
     this.name = props.name
     this.email = props.email
     this.password = props.password
+    this.activatedAt = props.activatedAt
   }
 }

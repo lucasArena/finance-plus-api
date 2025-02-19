@@ -27,6 +27,7 @@ export class SignInUserUsecase {
     return this.authentication.encrypt({
       key: usersignIn.key,
       name: usersignIn.name,
+      activatedAt: usersignIn.activatedAt,
     })
   }
 }

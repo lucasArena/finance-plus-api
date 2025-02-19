@@ -1,14 +1,13 @@
 import { inject, injectable } from 'tsyringe'
 
-import { ISignUpUserUsecaseDTO } from '@/domain/usecases/SignUpUser/SignUpUserUsecaseDTO'
-import { User } from '@/domain/entities/User.types'
 import { IUserRepository } from '@/domain/ports/UserRepository.types'
 import { IEmail } from '@/domain/application/Email.types'
 import { IUserActivationCodesRepository } from '@/domain/ports/UserActivactionCodesRepository.types'
 import { UserActivationCode } from '@/domain/entities/UserActivationCode.types'
+import { SendActivationCodeEmailDTO } from '@/domain/usecases/SendActivationCodeEmail/SendActivationCodeEmailDTO'
 
 @injectable()
-export class SignUpUserUsecase {
+export class SendActivationCodeEmailUsecase {
   constructor(
     @inject('IUserRepository') private userRepository: IUserRepository,
     @inject('IUserActivationCodesRepository')
@@ -16,33 +15,31 @@ export class SignUpUserUsecase {
     @inject('IEmail') private email: IEmail,
   ) {}
 
-  async handle(data: ISignUpUserUsecaseDTO) {
-    if (!data.name) throw new Error('Name is required', { cause: 400 })
-    if (!data.email) throw new Error('Email is required', { cause: 400 })
-    if (!data.password) throw new Error('Password is required', { cause: 400 })
-
-    const isEmailExists = await this.userRepository.getByEmail(data.email)
-
-    if (isEmailExists) {
-      throw new Error('Email já existente', { cause: 400 })
+  async handle(data: SendActivationCodeEmailDTO) {
+    if (!data.userKey) {
+      throw new Error('Chave do usuário é requirida', { cause: 401 })
     }
 
-    const user = new User({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    })
+    const user = await this.userRepository.getByKey(data.userKey)
 
-    const userKey = await this.userRepository.create(user)
+    if (!user) {
+      throw new Error('Usuário não existe', { cause: 400 })
+    }
+
+    if (user.activatedAt) {
+      throw new Error('Usuário já está ativado', { cause: 400 })
+    }
+
+    await this.userActivationCodes.invalidateByUserKey(user.key)
 
     const userActivationCode = new UserActivationCode({
-      userKey,
+      userKey: user.key,
       code: Math.floor(10000 + Math.random() * 90000),
     })
     await this.userActivationCodes.create(userActivationCode)
 
     await this.email.send({
-      to: data.email,
+      to: user.email!,
       subject: 'Bem vindo a BlueFin',
       template: 'Welcome',
       variables: {

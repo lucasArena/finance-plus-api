@@ -1,13 +1,13 @@
 import { Entity, IEntity } from '@/domain/entities/Entity.types'
 
-export interface IExpenseType extends IEntity {
+export interface IExpenseCategory extends IEntity {
   readonly name: string
 }
 
-export class ExpenseType extends Entity {
+export class ExpenseCategory extends Entity {
   public readonly name?: string
 
-  constructor(props: Partial<IExpenseType>) {
+  constructor(props: Partial<IExpenseCategory>) {
     super({
       key: props.key,
       createdAt: props.createdAt,

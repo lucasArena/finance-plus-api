@@ -1,14 +1,14 @@
 import { inject, injectable } from 'tsyringe'
 
 import { IExpenseRepository } from '@/domain/ports/ExpenseRepository.types'
-import { IExpenseTypeRepository } from '@/domain/ports/ExpenseTypeRepository.types'
+import { IExpenseCategoryRepository } from '@/domain/ports/ExpenseCategoryRepository.types'
 import { IDeleteExpenseUsecaseDTO } from '@/domain/usecases/DeleteExpense/DeleteExpenseUsecaseDTO'
 
 @injectable()
 export class DeleteExpenseUsecase {
   constructor(
-    @inject('IExpenseTypeRepository')
-    private expenseTypeRepository: IExpenseTypeRepository,
+    @inject('IExpenseCategoryRepository')
+    private expenseCategoryRepository: IExpenseCategoryRepository,
     @inject('IExpenseRepository') private expenseRepository: IExpenseRepository,
   ) {}
 

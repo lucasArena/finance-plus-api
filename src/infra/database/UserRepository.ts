@@ -5,11 +5,12 @@ import { IUserRepository } from '@/domain/ports/UserRepository.types'
 export class UserRepository implements IUserRepository {
   constructor() {}
 
-  async getByEmail(email: string): Promise<User | null> {
+  async getByKey(key: string): Promise<User | null> {
     const user = await Knex<IUser>('users')
       .where({
-        email,
+        key,
       })
+      .whereNull('deletedAt')
       .first()
 
     if (!user) return null
@@ -19,6 +20,28 @@ export class UserRepository implements IUserRepository {
       name: user.name,
       email: user.email,
       password: user.password,
+      activatedAt: user.activatedAt,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    })
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
+    const user = await Knex<IUser>('users')
+      .where({
+        email,
+      })
+      .whereNull('deletedAt')
+      .first()
+
+    if (!user) return null
+
+    return new User({
+      key: user.key,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      activatedAt: user.activatedAt,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     })
@@ -30,6 +53,7 @@ export class UserRepository implements IUserRepository {
         email: data.email,
         password: data.password,
       })
+      .whereNull('deletedAt')
       .first()
 
     if (!user) return null
@@ -38,17 +62,22 @@ export class UserRepository implements IUserRepository {
       key: user.key,
       name: user.name,
       email: user.email,
+      activatedAt: user.activatedAt,
       password: user.password,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     })
   }
 
-  async create(data: User): Promise<void> {
-    await Knex('users').insert({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    })
+  async create(data: User): Promise<string> {
+    const [user] = await Knex('users')
+      .insert({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      })
+      .returning<Pick<IUser, 'key'>[]>(['key'])
+
+    return user.key
   }
 }

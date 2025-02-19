@@ -1,9 +1,9 @@
 import { Entity, IEntity } from '@/domain/entities/Entity.types'
-import { ExpenseType } from '@/domain/entities/ExpenseType.types'
+import { ExpenseCategory } from '@/domain/entities/ExpenseCategory.types'
 
 export interface IExpense extends IEntity {
   userKey: string
-  type: ExpenseType
+  type: ExpenseCategory
   description: string
   value: number
   date: string
@@ -11,7 +11,7 @@ export interface IExpense extends IEntity {
 
 export class Expense extends Entity {
   public readonly userKey?: string
-  public readonly type?: ExpenseType
+  public readonly type?: ExpenseCategory
   public readonly description?: string
   public readonly value?: number
   public readonly date?: string

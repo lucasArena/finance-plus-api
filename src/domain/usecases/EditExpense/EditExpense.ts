@@ -2,15 +2,15 @@ import { inject, injectable } from 'tsyringe'
 
 import { IExpenseRepository } from '@/domain/ports/ExpenseRepository.types'
 import { Expense } from '@/domain/entities/Expense.types'
-import { IExpenseTypeRepository } from '@/domain/ports/ExpenseTypeRepository.types'
-import { ExpenseType } from '@/domain/entities/ExpenseType.types'
+import { IExpenseCategoryRepository } from '@/domain/ports/ExpenseCategoryRepository.types'
+import { ExpenseCategory } from '@/domain/entities/ExpenseCategory.types'
 import { IEditExpenseUsecaseDTO } from '@/domain/usecases/EditExpense/EditExpenseUsecaseDTO'
 
 @injectable()
 export class EditExpenseUsecase {
   constructor(
-    @inject('IExpenseTypeRepository')
-    private expenseTypeRepository: IExpenseTypeRepository,
+    @inject('IExpenseCategoryRepository')
+    private expenseCategoryRepository: IExpenseCategoryRepository,
     @inject('IExpenseRepository') private expenseRepository: IExpenseRepository,
   ) {}
 
@@ -26,16 +26,16 @@ export class EditExpenseUsecase {
     const expense = new Expense({
       key: data.key,
       userKey: data.userKey,
-      type: new ExpenseType({ key: data.typeId }),
+      type: new ExpenseCategory({ key: data.typeId }),
       description: data.description,
       value: data.value,
       date: data.date,
     })
 
-    const isExpenseTypeExists =
-      await this.expenseTypeRepository.getWithTypeByUserKey(data.typeId)
+    const isExpenseCategoryExists =
+      await this.expenseCategoryRepository.getWithTypeByUserKey(data.typeId)
 
-    if (!isExpenseTypeExists)
+    if (!isExpenseCategoryExists)
       throw new Error('Type does not exists', { cause: 400 })
 
     const isExpenseExists = await this.expenseRepository.getByKey(data.key)

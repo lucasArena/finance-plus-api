@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from 'tsyringe'
 
-import { ListAllExpenseTypesUsecase } from '@/domain/usecases/ListAllExpenseTypesUsecase/ListAllExpenseTypesUsecase'
+import { ListAllExpenseCategoriesUsecase } from '@/domain/usecases/ListAllExpenseCategoriesUsecase/ListAllExpenseCategoriesUsecase'
 
-export const ListAllExpenseTypesController = async (
+export const ListAllExpenseCategoriesController = async (
   _request: FastifyRequest,
   response: FastifyReply,
 ) => {
   const expensesTypes = await container
-    .resolve(ListAllExpenseTypesUsecase)
+    .resolve(ListAllExpenseCategoriesUsecase)
     .handle()
 
   return response

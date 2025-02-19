@@ -1,5 +1,5 @@
 import { Expense, IExpense } from '@/domain/entities/Expense.types'
-import { ExpenseType } from '@/domain/entities/ExpenseType.types'
+import { ExpenseCategory } from '@/domain/entities/ExpenseCategory.types'
 import {
   IExpenseGrouped,
   IExpenseRepository,
@@ -22,9 +22,13 @@ export class ExpenseRepository implements IExpenseRepository {
         'expenses.description',
         'expenses.date',
         'expenses.value',
-        'expenses_types.name',
+        'expenses_categories.name',
       )
-      .innerJoin('expenses_types', 'expenses.typeId', 'expenses_types.key')
+      .innerJoin(
+        'expenses_categories',
+        'expenses.typeId',
+        'expenses_categories.key',
+      )
       .where({
         userKey: expense.userKey,
       })
@@ -39,7 +43,7 @@ export class ExpenseRepository implements IExpenseRepository {
       expense =>
         new Expense({
           key: expense.key,
-          type: new ExpenseType({
+          type: new ExpenseCategory({
             key: expense.typeId,
             name: expense.name,
           }),
@@ -73,14 +77,19 @@ export class ExpenseRepository implements IExpenseRepository {
     const [year, month] = expense.date?.split('-') ?? []
 
     const response = await Knex('expenses')
-      .select('expenses.typeId', 'expenses_types.name')
+      .select('expenses.typeId', 'expenses_categories.name')
       .sum<IExpenseGrouped[]>({ total: 'value' })
-      .innerJoin('expenses_types', 'expenses.typeId', '=', 'expenses_types.key')
+      .innerJoin(
+        'expenses_categories',
+        'expenses.typeId',
+        '=',
+        'expenses_categories.key',
+      )
       .where({ userKey: expense.userKey })
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
       .whereNull('expenses.deletedAt')
-      .groupBy('expenses.typeId', 'expenses_types.name')
+      .groupBy('expenses.typeId', 'expenses_categories.name')
 
     return response.map(expenseGrouped => ({
       typeId: expenseGrouped.typeId,
@@ -99,7 +108,7 @@ export class ExpenseRepository implements IExpenseRepository {
 
     return new Expense({
       key: response?.key,
-      type: new ExpenseType({ key: response?.typeId }),
+      type: new ExpenseCategory({ key: response?.typeId }),
       description: response?.description,
       value: response?.value,
       date: response?.date,
