@@ -30,7 +30,6 @@ export const userRoutes = () => {
   server.post(
     '/users/activationcode/send',
     {
-      preHandler: new AuthorizationMiddleware().handle,
       schema: sendActivationCodeSchema,
     },
     SendActivationCodeEmailController,

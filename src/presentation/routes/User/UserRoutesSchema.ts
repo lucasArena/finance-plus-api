@@ -54,13 +54,23 @@ export const usersSignUpSchema: FastifySchema = {
 }
 
 export const sendActivationCodeSchema: FastifySchema = {
-  description: 'User activation code endpoint',
+  description: 'User send code endpoint to user email',
   security: [
     {
       bearerAuth: [],
     },
   ],
   tags: ['Users'],
+  body: {
+    type: 'object',
+    required: ['userKey'],
+    properties: {
+      userKey: {
+        type: 'string',
+        description: 'userKey',
+      },
+    },
+  },
   response: {
     201: {},
   },
