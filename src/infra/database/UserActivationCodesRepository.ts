@@ -9,13 +9,16 @@ import { UserActivationCode } from '@/domain/entities/UserActivationCode.types'
 export class UserActivationCodesRepository
   implements IUserActivationCodesRepository
 {
-  async getByUserKey(userKey: string): Promise<UserActivationCode | null> {
+  async getByUserKeyAndCode(
+    data: UserActivationCode,
+  ): Promise<UserActivationCode | null> {
     const userActivationCode = await Knex<IUserActivationCode>(
       'user_activation_codes',
     )
       .whereNull('deletedAt')
       .where({
-        userKey,
+        userKey: data.userKey,
+        code: data.code,
       })
       .first<IUserActivationCode>()
 
@@ -35,7 +38,7 @@ export class UserActivationCodesRepository
 
   async invalidateByUserKey(userKey: string): Promise<void> {
     await Knex<IUserActivationCode>('user_activation_codes')
-      .update({ expiredAt: new Date() })
+      .update({ deletedAt: new Date() })
       .where({ userKey })
   }
 

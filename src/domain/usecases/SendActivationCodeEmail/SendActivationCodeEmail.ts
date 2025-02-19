@@ -11,7 +11,7 @@ export class SendActivationCodeEmailUsecase {
   constructor(
     @inject('IUserRepository') private userRepository: IUserRepository,
     @inject('IUserActivationCodesRepository')
-    private userActivationCodes: IUserActivationCodesRepository,
+    private userActivationCodesRepository: IUserActivationCodesRepository,
     @inject('IEmail') private email: IEmail,
   ) {}
 
@@ -30,13 +30,13 @@ export class SendActivationCodeEmailUsecase {
       throw new Error('Usuário já está ativado', { cause: 400 })
     }
 
-    await this.userActivationCodes.invalidateByUserKey(user.key)
+    await this.userActivationCodesRepository.invalidateByUserKey(user.key)
 
     const userActivationCode = new UserActivationCode({
       userKey: user.key,
       code: Math.floor(10000 + Math.random() * 90000),
     })
-    await this.userActivationCodes.create(userActivationCode)
+    await this.userActivationCodesRepository.create(userActivationCode)
 
     await this.email.send({
       to: user.email!,

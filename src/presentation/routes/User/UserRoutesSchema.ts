@@ -53,6 +53,42 @@ export const usersSignUpSchema: FastifySchema = {
   },
 }
 
+export const sendActivationCodeSchema: FastifySchema = {
+  description: 'User activation code endpoint',
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  tags: ['Users'],
+  response: {
+    201: {},
+  },
+}
+
+export const validateActivationCodeSchema: FastifySchema = {
+  description: 'User validation code',
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  tags: ['Users'],
+  body: {
+    type: 'object',
+    required: ['code'],
+    properties: {
+      code: {
+        type: 'number',
+        description: 'Validation code',
+      },
+    },
+  },
+  response: {
+    201: {},
+  },
+}
+
 export const usersExpensesSchema: FastifySchema = {
   description: 'List all users expenses',
   tags: ['Users'],

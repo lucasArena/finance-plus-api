@@ -9,6 +9,8 @@ export interface IUserActivationCode extends IEntity {
 
 export interface IUserActivationCodesRepository {
   invalidateByUserKey: (userKey: string) => Promise<void>
-  getByUserKey: (userKey: string) => Promise<UserActivationCode | null>
+  getByUserKeyAndCode: (
+    userActivationCode: UserActivationCode,
+  ) => Promise<UserActivationCode | null>
   create: (userActivationCode: UserActivationCode) => Promise<void>
 }

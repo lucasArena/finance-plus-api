@@ -80,4 +80,10 @@ export class UserRepository implements IUserRepository {
 
     return user.key
   }
+
+  async activate(): Promise<void> {
+    await Knex('users').update({
+      activatedAt: new Date(),
+    })
+  }
 }

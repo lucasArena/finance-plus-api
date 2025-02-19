@@ -6,11 +6,15 @@ import { SignInUserController } from '@/presentation/controllers/User/SignInUser
 import { SignUpUserController } from '@/presentation/controllers/User/SignUpUserController'
 import { AuthorizationMiddleware } from '@/presentation/middlewares/AuthorizationMiddleware'
 import {
+  sendActivationCodeSchema,
   usersExpensesGroupedSchema,
   usersExpensesSchema,
   usersSignInSchema,
   usersSignUpSchema,
+  validateActivationCodeSchema,
 } from '@/presentation/routes/User/UserRoutesSchema'
+import { SendActivationCodeEmailController } from '@/presentation/controllers/User/SendActivationCodeEmailController'
+import { ValidateUserCodeController } from '@/presentation/controllers/User/ValidateUserCodeController'
 
 export const userRoutes = () => {
   server.post(
@@ -22,6 +26,23 @@ export const userRoutes = () => {
     '/users/sign-up',
     { schema: usersSignUpSchema },
     SignUpUserController,
+  )
+  server.post(
+    '/users/activationcode/send',
+    {
+      preHandler: new AuthorizationMiddleware().handle,
+      schema: sendActivationCodeSchema,
+    },
+    SendActivationCodeEmailController,
+  )
+
+  server.post(
+    '/users/activationcode/validate',
+    {
+      preHandler: new AuthorizationMiddleware().handle,
+      schema: validateActivationCodeSchema,
+    },
+    ValidateUserCodeController,
   )
   server.get(
     '/users/expenses',
