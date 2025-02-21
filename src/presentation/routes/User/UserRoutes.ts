@@ -38,7 +38,6 @@ export const userRoutes = () => {
   server.post(
     '/users/activationcode/validate',
     {
-      preHandler: new AuthorizationMiddleware().handle,
       schema: validateActivationCodeSchema,
     },
     ValidateUserCodeController,
