@@ -9,8 +9,7 @@ export const ValidateUserCodeController = async (
   }>,
   response: FastifyReply,
 ) => {
-  const userKey = request.userKey
-  const { code } = request.body
+  const { code, userKey } = request.body
 
   await container.resolve(ValidateUserCodeUsecase).handle({
     userKey,
