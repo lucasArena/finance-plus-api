@@ -7,6 +7,9 @@ export interface IEnvironment {
   DB_NAME: string
   DB_PORT: number
   DECRYPT_KEY: string
+  EMAIL_HOST: string
+  EMAIL_USER: string
+  EMAIL_PASSWORD: string
 }
 
 declare global {
@@ -20,6 +23,9 @@ declare global {
       readonly DB_NAME: string
       readonly DB_PORT: string
       readonly DECRYPT_KEY: string
+      readonly EMAIL_HOST: string
+      readonly EMAIL_USER: string
+      readonly EMAIL_PASSWORD: string
     }
   }
 }

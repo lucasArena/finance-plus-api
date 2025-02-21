@@ -9,4 +9,7 @@ export const ENV: IEnvironment = {
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_PORT: Number(process.env.DB_PORT),
   DECRYPT_KEY: process.env.DECRYPT_KEY,
+  EMAIL_HOST: process.env.EMAIL_HOST,
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
 }

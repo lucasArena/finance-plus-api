@@ -4,6 +4,7 @@ import { IEmail, IEmailSendProps } from '@/domain/application/Email.types'
 import { resolve } from 'path'
 import { promises as fs } from 'fs'
 import handlebars from 'handlebars'
+import { ENV } from '@/shared/utilities/EnvUtil'
 
 export class NodeMailerEmail implements IEmail {
   private transporter
@@ -11,12 +12,12 @@ export class NodeMailerEmail implements IEmail {
   constructor() {
     this.transporter = nodeMailer.createTransport({
       service: 'Gmail',
-      host: 'smtp.gmail.com',
+      host: ENV.EMAIL_HOST,
       port: 465,
       secure: true,
       auth: {
-        user: 'lucasarenasantos@gmail.com',
-        pass: 'frfa yddx ccwx itgb',
+        user: ENV.EMAIL_USER,
+        pass: ENV.EMAIL_PASSWORD,
       },
     })
   }

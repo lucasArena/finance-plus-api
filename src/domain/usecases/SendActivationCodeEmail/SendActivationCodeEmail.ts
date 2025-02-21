@@ -40,7 +40,7 @@ export class SendActivationCodeEmailUsecase {
 
     await this.email.send({
       to: user.email!,
-      subject: 'Bem vindo a BlueFin',
+      subject: 'Código de verificação',
       template: 'Welcome',
       variables: {
         code: userActivationCode.code,
