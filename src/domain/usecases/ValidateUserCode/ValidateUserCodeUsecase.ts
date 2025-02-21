@@ -45,7 +45,7 @@ export class ValidateUserCodeUsecase {
       throw new Error('Codigo expirado', { cause: 400 })
     }
 
-    await this.userRepository.activateByUserKey(data.userKey)
+    await this.userRepository.activateByKey(data.userKey)
     await this.userActivationCodesRepository.invalidateByUserKey(user.key)
   }
 }

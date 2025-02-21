@@ -81,11 +81,11 @@ export class UserRepository implements IUserRepository {
     return user.key
   }
 
-  async activateByUserKey(userKey: string): Promise<void> {
+  async activateByKey(key: string): Promise<void> {
     await Knex('users')
       .update({
         activatedAt: new Date(),
       })
-      .where({ userKey })
+      .where({ key })
   }
 }
