@@ -5,5 +5,6 @@ export interface IUserRepository {
   getByEmail: (user: string) => Promise<User | null>
   getByEmailAndPassword: (user: User) => Promise<User | null>
   create: (user: User) => Promise<string>
+  updatePassword: (user: User) => Promise<void>
   activateByKey: (userKey: string) => Promise<void>
 }

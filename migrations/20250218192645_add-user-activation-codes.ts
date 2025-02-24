@@ -3,9 +3,10 @@
 import type { Knex } from 'knex'
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('user_activation_codes', table => {
+  return knex.schema.createTable('user_codes', table => {
     table.uuid('key').primary().defaultTo(knex.raw('gen_random_uuid()'))
     table.uuid('userKey').index().references('key').inTable('users')
+    table.enum('type', ['email_validation', 'forget_password'])
     table.integer('code')
     table
       .timestamp('expiredAt')
@@ -17,5 +18,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable('user_activation_codes')
+  return knex.schema.dropTable('user_codes')
 }

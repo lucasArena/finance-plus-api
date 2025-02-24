@@ -1,7 +1,7 @@
 export interface IEmailSendProps {
   to: string
   subject: string
-  template: 'Welcome'
+  template: 'UserCodeVerification'
   variables?: Record<string, unknown>
 }
 

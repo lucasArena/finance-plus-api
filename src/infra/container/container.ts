@@ -9,8 +9,8 @@ import { ExpenseRepository } from '@/infra/database/ExpenseRepository'
 import { IExpenseRepository } from '@/domain/ports/ExpenseRepository.types'
 import { IEmail } from '@/domain/application/Email.types'
 import { NodeMailerEmail } from '@/infra/email/NodeMailerEmail'
-import { UserActivationCodesRepository } from '@/infra/database/UserActivationCodesRepository'
-import { IUserActivationCodesRepository } from '@/domain/ports/UserActivactionCodesRepository.types'
+import { UserCodesRepository } from '@/infra/database/UserCodesRepository'
+import { IUserCodesRepository } from '@/domain/ports/UserCodesRepository.types'
 
 container.register<IToken>('IToken', {
   useClass: Token,
@@ -26,19 +26,9 @@ container.register<IExpenseRepository>('IExpenseRepository', {
   useClass: ExpenseRepository,
 })
 
-container.register<IUserActivationCodesRepository>(
-  'IUserActivationCodesRepository',
-  {
-    useClass: UserActivationCodesRepository,
-  },
-)
-
-container.register<IUserActivationCodesRepository>(
-  'IUserActivationCodesRepository',
-  {
-    useClass: UserActivationCodesRepository,
-  },
-)
+container.register<IUserCodesRepository>('IUserCodesRepository', {
+  useClass: UserCodesRepository,
+})
 
 container.register<IEmail>('IEmail', {
   useClass: NodeMailerEmail,

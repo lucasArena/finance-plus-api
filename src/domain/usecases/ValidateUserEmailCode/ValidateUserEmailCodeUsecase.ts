@@ -1,20 +1,23 @@
 import { inject, injectable } from 'tsyringe'
 
-import { IUserActivationCodesRepository } from '@/domain/ports/UserActivactionCodesRepository.types'
-import { IValidateUserCodeUsecaseDTO } from '@/domain/usecases/ValidateUserCode/ValidateUserCodeUsecaseDTO'
-import { UserActivationCode } from '@/domain/entities/UserActivationCode.types'
+import {
+  EUserCodeType,
+  IUserCodesRepository,
+} from '@/domain/ports/UserCodesRepository.types'
+import { ValidateUserEmailCodeUsecaseDTO } from '@/domain/usecases/ValidateUserEmailCode/ValidateUserEmailCodeUsecaseDTO'
+import { UserCode } from '@/domain/entities/UserCode.types'
 import { IUserRepository } from '@/domain/ports/UserRepository.types'
 
 @injectable()
 export class ValidateUserCodeUsecase {
   constructor(
-    @inject('IUserActivationCodesRepository')
-    private userActivationCodesRepository: IUserActivationCodesRepository,
+    @inject('IUserCodesRepository')
+    private UserCodesRepository: IUserCodesRepository,
     @inject('IUserRepository')
     private userRepository: IUserRepository,
   ) {}
 
-  async handle(data: IValidateUserCodeUsecaseDTO) {
+  async handle(data: ValidateUserEmailCodeUsecaseDTO) {
     if (!data.userKey)
       throw new Error('Chave do usuário requerida', { cause: 400 })
 
@@ -28,12 +31,13 @@ export class ValidateUserCodeUsecase {
       throw new Error('Usuário já está ativado', { cause: 400 })
     }
 
-    const userActivationCode = new UserActivationCode({
+    const userActivationCode = new UserCode({
       userKey: data.userKey,
       code: data.code,
+      type: EUserCodeType.EMAIL_VALIDATION,
     })
     const activationCode =
-      await this.userActivationCodesRepository.getByUserKeyAndCode(
+      await this.UserCodesRepository.getByUserKeyAndTypeAndCode(
         userActivationCode,
       )
 
@@ -46,6 +50,8 @@ export class ValidateUserCodeUsecase {
     }
 
     await this.userRepository.activateByKey(data.userKey)
-    await this.userActivationCodesRepository.invalidateByUserKey(user.key)
+    await this.UserCodesRepository.invalidateByTypeAndUserKey(
+      userActivationCode,
+    )
   }
 }

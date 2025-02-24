@@ -6,15 +6,21 @@ import { SignInUserController } from '@/presentation/controllers/User/SignInUser
 import { SignUpUserController } from '@/presentation/controllers/User/SignUpUserController'
 import { AuthorizationMiddleware } from '@/presentation/middlewares/AuthorizationMiddleware'
 import {
-  sendActivationCodeSchema,
+  confirmForgetPasswordSchema,
+  sendUserEmailCodeSchema,
+  sendUserForgetPasswordCodeSchema,
   usersExpensesGroupedSchema,
   usersExpensesSchema,
   usersSignInSchema,
   usersSignUpSchema,
-  validateActivationCodeSchema,
+  validateUserCodeForgetPasswordSchema,
+  validateUserEmailCodeSchema,
 } from '@/presentation/routes/User/UserRoutesSchema'
-import { SendActivationCodeEmailController } from '@/presentation/controllers/User/SendActivationCodeEmailController'
-import { ValidateUserCodeController } from '@/presentation/controllers/User/ValidateUserCodeController'
+import { SendUserEmailCodeController } from '@/presentation/controllers/User/SendUserEmailCodeController'
+import { ValidateUserEmailCodeController } from '@/presentation/controllers/User/ValidateUserEmailCodeController'
+import { SendUserForgetPasswordCodeController } from '@/presentation/controllers/User/SendUserForgetPasswordCodeController'
+import { ConfirmForgetPasswordController } from '@/presentation/controllers/User/ConfirmForgetPasswordController'
+import { ValidateUserCodeForgetPasswordController } from '@/presentation/controllers/User/ValidateUserCodeForgetPasswordController'
 
 export const userRoutes = () => {
   server.post(
@@ -28,20 +34,43 @@ export const userRoutes = () => {
     SignUpUserController,
   )
   server.post(
-    '/users/activationcode/send',
+    '/users/code/email/send',
     {
-      schema: sendActivationCodeSchema,
+      schema: sendUserEmailCodeSchema,
     },
-    SendActivationCodeEmailController,
+    SendUserEmailCodeController,
   )
 
   server.post(
-    '/users/activationcode/validate',
+    '/users/code/forget-password/send',
     {
-      schema: validateActivationCodeSchema,
+      schema: sendUserForgetPasswordCodeSchema,
     },
-    ValidateUserCodeController,
+    SendUserForgetPasswordCodeController,
   )
+  server.post(
+    '/users/code/forget-password/validate',
+    {
+      schema: validateUserCodeForgetPasswordSchema,
+    },
+    ValidateUserCodeForgetPasswordController,
+  )
+  server.patch(
+    '/users/password',
+    {
+      schema: confirmForgetPasswordSchema,
+    },
+    ConfirmForgetPasswordController,
+  )
+
+  server.post(
+    '/users/code/email/validate',
+    {
+      schema: validateUserEmailCodeSchema,
+    },
+    ValidateUserEmailCodeController,
+  )
+
   server.get(
     '/users/expenses',
     {

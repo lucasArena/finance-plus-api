@@ -88,4 +88,12 @@ export class UserRepository implements IUserRepository {
       })
       .where({ key })
   }
+
+  async updatePassword(user: User): Promise<void> {
+    await Knex('users')
+      .update({
+        password: user.password,
+      })
+      .where({ key: user.key })
+  }
 }

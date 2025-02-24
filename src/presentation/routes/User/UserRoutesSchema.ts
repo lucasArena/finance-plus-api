@@ -53,13 +53,8 @@ export const usersSignUpSchema: FastifySchema = {
   },
 }
 
-export const sendActivationCodeSchema: FastifySchema = {
+export const sendUserEmailCodeSchema: FastifySchema = {
   description: 'User send code endpoint to user email',
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
   tags: ['Users'],
   body: {
     type: 'object',
@@ -67,7 +62,50 @@ export const sendActivationCodeSchema: FastifySchema = {
     properties: {
       userKey: {
         type: 'string',
+        format: 'email',
         description: 'userKey',
+      },
+    },
+  },
+  response: {
+    204: {},
+  },
+}
+
+export const sendUserForgetPasswordCodeSchema: FastifySchema = {
+  description: 'Send user forget password code endpoint to user email',
+  tags: ['Users'],
+  body: {
+    type: 'object',
+    required: ['email'],
+    properties: {
+      email: {
+        type: 'string',
+        format: 'email',
+        description: 'email',
+      },
+    },
+  },
+  response: {
+    204: {},
+  },
+}
+
+export const validateUserCodeForgetPasswordSchema: FastifySchema = {
+  description: 'User code validation on forget password flow',
+  tags: ['Users'],
+  body: {
+    type: 'object',
+    required: ['email', 'code'],
+    properties: {
+      email: {
+        type: 'string',
+        format: 'email',
+        description: 'Email',
+      },
+      code: {
+        type: 'string',
+        description: 'Validation code',
       },
     },
   },
@@ -76,7 +114,34 @@ export const sendActivationCodeSchema: FastifySchema = {
   },
 }
 
-export const validateActivationCodeSchema: FastifySchema = {
+export const confirmForgetPasswordSchema: FastifySchema = {
+  description: 'Confirm the change of the password',
+  tags: ['Users'],
+  body: {
+    type: 'object',
+    required: ['email', 'password', 'passwordConfirmation'],
+    properties: {
+      email: {
+        type: 'string',
+        format: 'email',
+        description: 'email',
+      },
+      password: {
+        type: 'string',
+        description: 'Password',
+      },
+      passwordConfirmation: {
+        type: 'string',
+        description: 'Password confirmation',
+      },
+    },
+  },
+  response: {
+    204: {},
+  },
+}
+
+export const validateUserEmailCodeSchema: FastifySchema = {
   description: 'User validation code',
   security: [
     {

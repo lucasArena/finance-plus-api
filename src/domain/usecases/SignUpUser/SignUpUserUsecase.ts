@@ -4,15 +4,15 @@ import { ISignUpUserUsecaseDTO } from '@/domain/usecases/SignUpUser/SignUpUserUs
 import { User } from '@/domain/entities/User.types'
 import { IUserRepository } from '@/domain/ports/UserRepository.types'
 import { IEmail } from '@/domain/application/Email.types'
-import { IUserActivationCodesRepository } from '@/domain/ports/UserActivactionCodesRepository.types'
-import { UserActivationCode } from '@/domain/entities/UserActivationCode.types'
+import { IUserCodesRepository } from '@/domain/ports/UserCodesRepository.types'
+import { UserCode } from '@/domain/entities/UserCode.types'
 
 @injectable()
 export class SignUpUserUsecase {
   constructor(
     @inject('IUserRepository') private userRepository: IUserRepository,
-    @inject('IUserActivationCodesRepository')
-    private userActivationCodes: IUserActivationCodesRepository,
+    @inject('IUserCodesRepository')
+    private userCodesRepository: IUserCodesRepository,
     @inject('IEmail') private email: IEmail,
   ) {}
 
@@ -35,16 +35,16 @@ export class SignUpUserUsecase {
 
     const userKey = await this.userRepository.create(user)
 
-    const userActivationCode = new UserActivationCode({
+    const userActivationCode = new UserCode({
       userKey,
       code: Math.floor(10000 + Math.random() * 90000),
     })
-    await this.userActivationCodes.create(userActivationCode)
+    await this.userCodesRepository.create(userActivationCode)
 
     await this.email.send({
       to: data.email,
       subject: 'Bem vindo a BlueFin',
-      template: 'Welcome',
+      template: 'UserCodeVerification',
       variables: {
         code: userActivationCode.code,
       },

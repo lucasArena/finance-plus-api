@@ -1,17 +1,20 @@
 import { Entity, IEntity } from '@/domain/entities/Entity.types'
+import { EUserCodeType } from '../ports/UserCodesRepository.types'
 
-export interface IUserActivationCode extends IEntity {
+export interface IUserCode extends IEntity {
   readonly userKey: string
+  readonly type: EUserCodeType
   readonly code: number
   readonly expiredAt: Date
 }
 
-export class UserActivationCode extends Entity {
+export class UserCode extends Entity {
   public readonly userKey?: string
+  public readonly type?: EUserCodeType
   public readonly code?: number
   public readonly expiredAt?: Date
 
-  constructor(props: Partial<IUserActivationCode>) {
+  constructor(props: Partial<IUserCode>) {
     super({
       key: props.key,
       createdAt: props.createdAt,
@@ -19,6 +22,7 @@ export class UserActivationCode extends Entity {
     })
 
     this.userKey = props.userKey
+    this.type = props.type
     this.code = props.code
     this.expiredAt = props.expiredAt
   }

@@ -2,20 +2,23 @@ import { inject, injectable } from 'tsyringe'
 
 import { IUserRepository } from '@/domain/ports/UserRepository.types'
 import { IEmail } from '@/domain/application/Email.types'
-import { IUserActivationCodesRepository } from '@/domain/ports/UserActivactionCodesRepository.types'
-import { UserActivationCode } from '@/domain/entities/UserActivationCode.types'
-import { SendActivationCodeEmailDTO } from '@/domain/usecases/SendActivationCodeEmail/SendActivationCodeEmailDTO'
+import {
+  EUserCodeType,
+  IUserCodesRepository,
+} from '@/domain/ports/UserCodesRepository.types'
+import { UserCode } from '@/domain/entities/UserCode.types'
+import { SendUserEmailCodeUsecaseDTO } from '@/domain/usecases/SendUserEmailCode/SendUserEmailCodeUsecaseDTO'
 
 @injectable()
-export class SendActivationCodeEmailUsecase {
+export class SendUserEmailCodeUsecase {
   constructor(
     @inject('IUserRepository') private userRepository: IUserRepository,
-    @inject('IUserActivationCodesRepository')
-    private userActivationCodesRepository: IUserActivationCodesRepository,
+    @inject('IUserCodesRepository')
+    private UserCodesRepository: IUserCodesRepository,
     @inject('IEmail') private email: IEmail,
   ) {}
 
-  async handle(data: SendActivationCodeEmailDTO) {
+  async handle(data: SendUserEmailCodeUsecaseDTO) {
     if (!data.userKey) {
       throw new Error('Chave do usuário é requirida', { cause: 401 })
     }
@@ -30,20 +33,21 @@ export class SendActivationCodeEmailUsecase {
       throw new Error('Usuário já está ativado', { cause: 400 })
     }
 
-    await this.userActivationCodesRepository.invalidateByUserKey(user.key)
-
-    const userActivationCode = new UserActivationCode({
+    const userCode = new UserCode({
       userKey: user.key,
+      type: EUserCodeType.EMAIL_VALIDATION,
       code: Math.floor(10000 + Math.random() * 90000),
     })
-    await this.userActivationCodesRepository.create(userActivationCode)
+
+    await this.UserCodesRepository.invalidateByTypeAndUserKey(userCode)
+    await this.UserCodesRepository.create(userCode)
 
     await this.email.send({
       to: user.email!,
       subject: 'Código de verificação',
-      template: 'Welcome',
+      template: 'UserCodeVerification',
       variables: {
-        code: userActivationCode.code,
+        code: userCode.code,
       },
     })
   }
