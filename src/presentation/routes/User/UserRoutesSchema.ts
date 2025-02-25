@@ -62,7 +62,6 @@ export const sendUserEmailCodeSchema: FastifySchema = {
     properties: {
       userKey: {
         type: 'string',
-        format: 'email',
         description: 'userKey',
       },
     },
