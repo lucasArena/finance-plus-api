@@ -1,9 +1,6 @@
 import { Knex } from 'knex'
 
 export async function seed(knex: Knex): Promise<void> {
-  // Deletes ALL existing entries
-  await knex('expenses_categories').del()
-
   // Inserts seed entries
   await knex('expenses_categories').insert([
     { name: 'Transporte', color: '#E74C3C' }, // Vermelho vibrante
