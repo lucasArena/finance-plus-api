@@ -13,15 +13,15 @@ export class SignInUserUsecase {
   ) {}
 
   async handle(data: ISignInUserUsecaseDTO) {
-    if (!data.email) throw new Error('Email is required', { cause: 400 })
-    if (!data.password) throw new Error('Password is required', { cause: 400 })
+    if (!data.email) throw new Error('Email é obrigatório', { cause: 400 })
+    if (!data.password) throw new Error('Senha é obrigatório', { cause: 400 })
 
     const user = new User({ email: data.email, password: data.password })
 
     const usersignIn = await this.userRepository.getByEmailAndPassword(user)
 
     if (!usersignIn) {
-      throw new Error('Email or password not found', { cause: 401 })
+      throw new Error('Email ou senha incorretos', { cause: 401 })
     }
 
     return this.authentication.encrypt({

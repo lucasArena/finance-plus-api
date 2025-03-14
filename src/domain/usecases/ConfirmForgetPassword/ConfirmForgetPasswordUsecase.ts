@@ -12,15 +12,15 @@ export class ConfirmForgetPasswordUsecase {
 
   async handle(data: ConfirmForgetPasswordUsecaseDTO) {
     if (!data.email) {
-      throw new Error('Email é requirida', { cause: 401 })
+      throw new Error('Email é obrigatório', { cause: 401 })
     }
 
     if (!data.password) {
-      throw new Error('Senha é requirida', { cause: 400 })
+      throw new Error('Senha é obrigatório', { cause: 400 })
     }
 
     if (!data.passwordConfirmation) {
-      throw new Error('Confirmação da senha é requirida', { cause: 400 })
+      throw new Error('Confirmação da senha é obrigatório', { cause: 400 })
     }
 
     if (data.password !== data.passwordConfirmation) {

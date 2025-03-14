@@ -20,9 +20,9 @@ export class SignUpUserUsecase {
   ) {}
 
   async handle(data: ISignUpUserUsecaseDTO) {
-    if (!data.name) throw new Error('Name is required', { cause: 400 })
-    if (!data.email) throw new Error('Email is required', { cause: 400 })
-    if (!data.password) throw new Error('Password is required', { cause: 400 })
+    if (!data.name) throw new Error('Nome é obrigatório', { cause: 400 })
+    if (!data.email) throw new Error('Email é obrigatório', { cause: 400 })
+    if (!data.password) throw new Error('Senha é obrigatório', { cause: 400 })
 
     const isEmailExists = await this.userRepository.getByEmail(data.email)
 

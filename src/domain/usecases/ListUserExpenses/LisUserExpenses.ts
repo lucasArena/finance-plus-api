@@ -10,11 +10,12 @@ export class ListUserExpensesUsecase {
   ) {}
 
   async handle(data: IListUserExpensesDTO) {
-    if (!data.userKey) throw new Error('User is required', { cause: 400 })
-    if (!data.page) throw new Error('Page is required', { cause: 400 })
-    if (!data.pageSize) throw new Error('Page size is required', { cause: 400 })
-    if (!data.month) throw new Error('Month is required', { cause: 400 })
-    if (!data.year) throw new Error('Year is required', { cause: 400 })
+    if (!data.userKey) throw new Error('Usuário é obrigatório', { cause: 500 })
+    if (!data.page) throw new Error('Pagina é obrigatório', { cause: 500 })
+    if (!data.pageSize)
+      throw new Error('Tamanho da página é obrigatório', { cause: 400 })
+    if (!data.month) throw new Error('Mês é obrigatório', { cause: 400 })
+    if (!data.year) throw new Error('Ano é obrigatório', { cause: 400 })
 
     const expense = new Expense({
       userKey: data.userKey,

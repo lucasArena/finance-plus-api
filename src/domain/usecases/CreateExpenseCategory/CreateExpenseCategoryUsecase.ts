@@ -12,9 +12,13 @@ export class CreateExpenseCategoryUsecase {
   ) {}
 
   async handle(data: ICreateExpenseCategoryUsecaseDTO) {
-    if (!data.name) throw new Error('Name is required', { cause: 400 })
+    if (!data.name) throw new Error('Nome é obrigatório', { cause: 400 })
+    if (!data.color) throw new Error('Cor é obrigatório', { cause: 400 })
 
-    const expenseCategory = new ExpenseCategory({ name: data.name })
+    const expenseCategory = new ExpenseCategory({
+      name: data.name,
+      color: data.color,
+    })
 
     const isExpenseCategoryExists =
       await this.expenseCategoryRepository.getByName(expenseCategory)

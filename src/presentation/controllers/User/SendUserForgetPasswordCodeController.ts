@@ -1,4 +1,4 @@
-import { SendUserForgetPasswordCodeDTO } from '@/domain/usecases/SendUserForgetPasswordCode/SendUserForgetPasswordCodeDTO'
+import { SendUserForgetPasswordCodeDTO } from '@/domain/usecases/SendUserForgetPasswordCode/SendUserForgetPasswordCodeUsecaseDTO'
 import { SendUserForgetPasswordCodeUsecase } from '@/domain/usecases/SendUserForgetPasswordCode/SendUserForgetPasswordCodeUsecase'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from 'tsyringe'

@@ -8,10 +8,11 @@ export const CreateExpenseCategoryController = async (
   request: FastifyRequest<{ Body: ICreateExpenseCategoryUsecaseDTO }>,
   response: FastifyReply,
 ) => {
-  const { name } = request.body
+  const { name, color } = request.body
 
   await container.resolve(CreateExpenseCategoryUsecase).handle({
     name,
+    color,
   })
 
   return response.status(201).send()

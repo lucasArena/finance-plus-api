@@ -10,9 +10,9 @@ export class ListUserExpensesGrouped {
   ) {}
 
   async handle(data: IListUserExpensesGroupedDTO) {
-    if (!data.userKey) throw new Error('User is required', { cause: 400 })
-    if (!data.month) throw new Error('Month is required', { cause: 400 })
-    if (!data.year) throw new Error('Year is required', { cause: 400 })
+    if (!data.userKey) throw new Error('Usuário é obrigatório', { cause: 500 })
+    if (!data.month) throw new Error('Mês é obrigatório', { cause: 400 })
+    if (!data.year) throw new Error('Ano é obrigatório', { cause: 400 })
 
     const expense = new Expense({
       userKey: data.userKey,

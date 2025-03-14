@@ -16,6 +16,7 @@ export class ExpenseCategoryRepository implements IExpenseCategoryRepository {
         new ExpenseCategory({
           key: expenseCategory.key,
           name: expenseCategory.name,
+          color: expenseCategory.color,
           createdAt: expenseCategory.createdAt,
           updatedAt: expenseCategory.updatedAt,
         }),
@@ -34,6 +35,7 @@ export class ExpenseCategoryRepository implements IExpenseCategoryRepository {
     return new ExpenseCategory({
       key: expenseCategory.key,
       name: expenseCategory.name,
+      color: expenseCategory.color,
       createdAt: expenseCategory.createdAt,
       updatedAt: expenseCategory.updatedAt,
     })
@@ -51,6 +53,7 @@ export class ExpenseCategoryRepository implements IExpenseCategoryRepository {
     return new ExpenseCategory({
       key: expenseCategory.key,
       name: expenseCategory.name,
+      color: expenseCategory.color,
       createdAt: expenseCategory.createdAt,
       updatedAt: expenseCategory.updatedAt,
     })

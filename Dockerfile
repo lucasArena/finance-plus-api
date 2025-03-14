@@ -20,4 +20,4 @@ RUN yarn build
 # EXPOSE 3333
 
 # Set the start command for the container
-CMD ["sh", "-c", "yarn database:migrate && yarn run:production"]
+CMD ["sh", "-c", "yarn database:migrate && yarn database:seed && yarn run:production"]

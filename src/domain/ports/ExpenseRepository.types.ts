@@ -3,6 +3,7 @@ import { Expense } from '@/domain/entities/Expense.types'
 export interface IExpenseGrouped {
   typeId: string
   name: string
+  color: string
   total: number
 }
 

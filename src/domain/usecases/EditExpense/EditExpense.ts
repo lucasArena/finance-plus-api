@@ -15,13 +15,12 @@ export class EditExpenseUsecase {
   ) {}
 
   async handle(data: IEditExpenseUsecaseDTO) {
-    if (!data.userKey) throw new Error('User is required', { cause: 400 })
-    if (!data.key) throw new Error('Key is required', { cause: 400 })
-    if (!data.description)
-      throw new Error('Description is required', { cause: 400 })
-    if (!data.typeId) throw new Error('Type is required', { cause: 400 })
-    if (!data.value) throw new Error('Value is required', { cause: 400 })
-    if (!data.date) throw new Error('Date is required', { cause: 400 })
+    if (!data.userKey) throw new Error('Usuário é obrigatório', { cause: 500 })
+    if (!data.key) throw new Error('Chave é obrigatório', { cause: 500 })
+
+    if (!data.typeId) throw new Error('Tipo é obrigatório', { cause: 400 })
+    if (!data.value) throw new Error('Valor é obrigatório', { cause: 400 })
+    if (!data.date) throw new Error('Data é obrigatória', { cause: 400 })
 
     const expense = new Expense({
       key: data.key,
@@ -36,12 +35,11 @@ export class EditExpenseUsecase {
       await this.expenseCategoryRepository.getWithTypeByUserKey(data.typeId)
 
     if (!isExpenseCategoryExists)
-      throw new Error('Type does not exists', { cause: 400 })
+      throw new Error('Tipo de despesa não existe', { cause: 400 })
 
     const isExpenseExists = await this.expenseRepository.getByKey(data.key)
 
-    if (!isExpenseExists)
-      throw new Error('Expense does not exists', { cause: 400 })
+    if (!isExpenseExists) throw new Error('Despesa não existe', { cause: 400 })
 
     await this.expenseRepository.edit(expense)
   }

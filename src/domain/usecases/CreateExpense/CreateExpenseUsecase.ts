@@ -15,12 +15,10 @@ export class CreateExpenseUsecase {
   ) {}
 
   async handle(data: ICreateExpenseUsecaseDTO) {
-    if (!data.userKey) throw new Error('User is required', { cause: 400 })
-    if (!data.description)
-      throw new Error('Description is required', { cause: 400 })
-    if (!data.typeId) throw new Error('Type is required', { cause: 400 })
-    if (!data.value) throw new Error('Value is required', { cause: 400 })
-    if (!data.date) throw new Error('Date is required', { cause: 400 })
+    if (!data.userKey) throw new Error('Usuário é obrigatório', { cause: 400 })
+    if (!data.typeId) throw new Error('Tipo é obrigatório', { cause: 400 })
+    if (!data.value) throw new Error('Valor obrigatório', { cause: 400 })
+    if (!data.date) throw new Error('Data é obrigatório', { cause: 400 })
 
     const expense = new Expense({
       userKey: data.userKey,

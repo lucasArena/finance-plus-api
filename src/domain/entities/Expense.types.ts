@@ -4,7 +4,7 @@ import { ExpenseCategory } from '@/domain/entities/ExpenseCategory.types'
 export interface IExpense extends IEntity {
   userKey: string
   type: ExpenseCategory
-  description: string
+  description?: string
   value: number
   date: string
 }

@@ -11,6 +11,7 @@
     "lint": "yarn eslint .",
     "build": "tsc && tsc-alias",
     "database:make": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:make",
+    "database:seed": "node --loader ts-node/esm ./node_modules/.bin/knex seed:run",
     "database:migrate": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:latest",
     "database:rollback": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:rollback",
     "database:rollback:all": "node --loader ts-node/esm ./node_modules/.bin/knex migrate:rollback --all"

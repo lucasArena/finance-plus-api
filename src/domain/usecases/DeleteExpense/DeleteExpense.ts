@@ -13,12 +13,11 @@ export class DeleteExpenseUsecase {
   ) {}
 
   async handle(data: IDeleteExpenseUsecaseDTO) {
-    if (!data.key) throw new Error('Key is required', { cause: 400 })
+    if (!data.key) throw new Error('Chave é obrigatório', { cause: 400 })
 
     const isExpenseExists = await this.expenseRepository.getByKey(data.key)
 
-    if (!isExpenseExists)
-      throw new Error('Expense does not exists', { cause: 400 })
+    if (!isExpenseExists) throw new Error('Despesa não existe', { cause: 400 })
 
     await this.expenseRepository.delete(data.key)
   }

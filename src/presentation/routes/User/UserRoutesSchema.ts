@@ -248,6 +248,7 @@ export const usersExpensesGroupedSchema: FastifySchema = {
       properties: {
         typeId: { type: 'string', description: 'Type uuid' },
         name: { type: 'string', description: 'Type name' },
+        color: { type: 'string', description: 'Color' },
         total: { type: 'number', description: 'Total of expenses grouped' },
       },
     },

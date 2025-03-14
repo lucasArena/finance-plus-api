@@ -77,7 +77,11 @@ export class ExpenseRepository implements IExpenseRepository {
     const [year, month] = expense.date?.split('-') ?? []
 
     const response = await Knex('expenses')
-      .select('expenses.typeId', 'expenses_categories.name')
+      .select(
+        'expenses.typeId',
+        'expenses_categories.name',
+        'expenses_categories.color',
+      )
       .sum<IExpenseGrouped[]>({ total: 'value' })
       .innerJoin(
         'expenses_categories',
@@ -89,11 +93,16 @@ export class ExpenseRepository implements IExpenseRepository {
       .andWhereRaw('EXTRACT(MONTH FROM expenses.date) = ?', [month])
       .andWhereRaw('EXTRACT(YEAR FROM expenses.date) = ?', [year])
       .whereNull('expenses.deletedAt')
-      .groupBy('expenses.typeId', 'expenses_categories.name')
+      .groupBy(
+        'expenses.typeId',
+        'expenses_categories.name',
+        'expenses_categories.color',
+      )
 
     return response.map(expenseGrouped => ({
       typeId: expenseGrouped.typeId,
       name: expenseGrouped.name,
+      color: expenseGrouped.color,
       total: Number(expenseGrouped.total),
     }))
   }

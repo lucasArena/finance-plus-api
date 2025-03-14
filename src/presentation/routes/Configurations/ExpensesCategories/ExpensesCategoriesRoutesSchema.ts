@@ -30,7 +30,8 @@ export const expensesTypesCreateSchema: FastifySchema = {
   ],
   body: {
     properties: {
-      name: { type: 'string', description: 'Expense type name' },
+      name: { type: 'string', description: 'Expense category name' },
+      color: { type: 'string', description: 'Expense category color' },
     },
   },
   response: {

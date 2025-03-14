@@ -7,7 +7,7 @@ import {
   IUserCodesRepository,
 } from '@/domain/ports/UserCodesRepository.types'
 import { UserCode } from '@/domain/entities/UserCode.types'
-import { SendUserForgetPasswordCodeDTO } from '@/domain/usecases/SendUserForgetPasswordCode/SendUserForgetPasswordCodeDTO'
+import { SendUserForgetPasswordCodeDTO } from '@/domain/usecases/SendUserForgetPasswordCode/SendUserForgetPasswordCodeUsecaseDTO'
 
 @injectable()
 export class SendUserForgetPasswordCodeUsecase {
